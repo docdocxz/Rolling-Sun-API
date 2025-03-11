@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace ClothINC_API.Controllers {
+namespace RollingSun.Controllers {
     [ApiController]
     [Route("[controller]")]
-    public class ClothINC_APIController : ControllerBase {
+    public class RollingSun_APIController : ControllerBase {
 
         }
     }

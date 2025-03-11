@@ -1,4 +1,4 @@
-namespace ClothINC_API {
+namespace RollingSun {
     public class Program {
         public static void Main(string[] args) {
             var builder = WebApplication.CreateBuilder(args);
