@@ -1,3 +1,6 @@
+using RollingSun_API;
+using System.Threading.RateLimiting;
+
 namespace RollingSun {
     public class Program {
         public static void Main(string[] args) {
@@ -6,6 +9,9 @@ namespace RollingSun {
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddScoped<DBreader>();
+            builder.Services.AddScoped<DataManager>();
+            builder.Services.AddScoped<IHostEnvironment>();
 
             var app = builder.Build();
 
@@ -14,7 +20,6 @@ namespace RollingSun {
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
