@@ -2,10 +2,11 @@
 
 namespace RollingSun_API {
     public interface IDBreader {
-        BandasVerticales GetBandasVerticales(string? flag);
-        DeBarral GetDeBarral(string? flag);
-        Roller GetRoller(string? flag);
-        List<Color> GetColores(string? name);
-        List<Tela> GetTelas(string? name);
+        //CortinasDTO GetAllCortinas();
+        BandasVerticales GetBandasVerticales();
+        DeBarral GetDeBarral();
+        Roller GetRoller();
+        List<Color> GetColores();
+        List<Tela> GetTelas();
         }
     }
