@@ -1,5 +1,6 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
+using RollingSun_API.Models;
 
 namespace RollingSun_API.Controllers {
     [ApiController]
@@ -11,6 +12,10 @@ namespace RollingSun_API.Controllers {
             DB = _database;
             }
 
-        
+        [Route("cortinas/{cortina?}/{flag?}")]
+        [Route("/cortinas/{flag?}")]
+        public ActionResult<CortinasDTO> GetCortinas(string? cortina, string? flag) {
+            return DB.GetCortinas(cortina,flag);
+            }
         }
     }

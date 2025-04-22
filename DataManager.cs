@@ -1,7 +1,7 @@
 ﻿using RollingSun_API.Models;
 
 namespace RollingSun_API {
-    public class DataManager {
+    public class DataManager : IDataManager {
         private readonly IDBreader Datos;
         public DataManager(IDBreader _datos) {
             Datos = _datos;

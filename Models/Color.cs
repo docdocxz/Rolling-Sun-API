@@ -2,11 +2,11 @@
 {
     public class Color
     {
-        public string Nombre { get; }
-        public int R { get; }
-        public int G { get; }
-        public int B { get; }
-        public string hex { get; }
-        public bool disponible { get; }
+        public string Nombre { get; set; }
+        public int R { get; set; }
+        public int G { get; set; }
+        public int B { get; set; }
+        public string hex { get; set; }
+        public bool disponible { get; set; }
         }
     }

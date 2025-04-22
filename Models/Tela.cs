@@ -8,10 +8,10 @@ namespace RollingSun_API.Models
 {
     public class Tela
     {
-        public string Nombre { get; }
-        public float Gramaje { get; }
-        public bool IsOpaca { get; }
-        public List<string> ColorNombre { get; }
-        public bool disponible { get; }
-    }
+        public string Nombre { get; set; }
+        public float Gramaje { get; set; }
+        public bool IsOpaca { get; set; }
+        public List<string> ColorNombre { get; set; }
+        public bool disponible { get; set; }
+        }
 }
