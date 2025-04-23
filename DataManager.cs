@@ -9,6 +9,8 @@ namespace RollingSun_API {
 
         private Roller? ProcesarRoller(string? flag) {
             Roller roller = Datos.GetRoller();
+            List<Tela> telas = Datos.GetTelas();
+            List<Color> colores = Datos.GetColores();
 
             if (flag == "all") {
                 return roller;
@@ -18,24 +20,16 @@ namespace RollingSun_API {
                 return null;
                 }
 
-            foreach (var name in roller.TelaNombre) {
-                Tela tela = Datos.GetTelas().Where(x => x.Nombre == name).Single();
-                if (!tela.disponible) {
-                    roller.TelaNombre.Remove(name);
-                    }
-                }
-            foreach (var name in roller.ColorNombre) {
-                Color color = Datos.GetColores().Where(x => x.Nombre == name).Single();
-                if (!color.disponible) {
-                    roller.ColorNombre.Remove(name);
-                    }
-                }
+            roller.TelaNombre.RemoveAll(t => telas.Exists(x => x.Nombre == t && !x.disponible));
+            roller.ColorNombre.RemoveAll(c => colores.Exists(x => x.Nombre == c && !x.disponible));
 
             return roller;
             }
 
         private DeBarral? ProcesarDebarral(string? flag) {
             DeBarral debarral = Datos.GetDeBarral();
+            List<Tela> telas = Datos.GetTelas();
+            List<Color> colores = Datos.GetColores();
 
             if (flag == "all") {
                 return debarral;
@@ -45,24 +39,16 @@ namespace RollingSun_API {
                 return null;
                 }
 
-            foreach (var name in debarral.TelaNombre) {
-                Tela tela = Datos.GetTelas().Where(x => x.Nombre == name).Single();
-                if (!tela.disponible) {
-                    debarral.TelaNombre.Remove(name);
-                    }
-                }
-            foreach (var name in debarral.ColorNombre) {
-                Color color = Datos.GetColores().Where(x => x.Nombre == name).Single();
-                if (!color.disponible) {
-                    debarral.ColorNombre.Remove(name);
-                    }
-                }
+            debarral.TelaNombre.RemoveAll(t => telas.Exists(x => x.Nombre == t && !x.disponible));
+            debarral.ColorNombre.RemoveAll(c => colores.Exists(x => x.Nombre == c && !x.disponible));
 
             return debarral;
             }
 
         private BandasVerticales? ProcesarBandasverticales(string? flag) {
             BandasVerticales bandasverticales = Datos.GetBandasVerticales();
+            List<Tela> telas = Datos.GetTelas();
+            List<Color> colores = Datos.GetColores();
 
             if (flag == "all") {
                 return bandasverticales;
@@ -72,18 +58,8 @@ namespace RollingSun_API {
                 return null;
                 }
 
-            foreach (var name in bandasverticales.TelaNombre) {
-                Tela tela = Datos.GetTelas().Where(x => x.Nombre == name).Single();
-                if (!tela.disponible) {
-                    bandasverticales.TelaNombre.Remove(name);
-                    }
-                }
-            foreach (var name in bandasverticales.ColorNombre) {
-                Color color = Datos.GetColores().Where(x => x.Nombre == name).Single();
-                if (!color.disponible) {
-                    bandasverticales.ColorNombre.Remove(name);
-                    }
-                }
+            bandasverticales.TelaNombre.RemoveAll(t => telas.Exists(x => x.Nombre == t && !x.disponible));
+            bandasverticales.ColorNombre.RemoveAll(c => colores.Exists(x => x.Nombre == c && !x.disponible));
 
             return bandasverticales;
             }
