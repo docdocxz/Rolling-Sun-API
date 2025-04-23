@@ -28,8 +28,8 @@
         }
 
     public class CortinasDTO {
-        public Roller Roller { get; set; }
-        public DeBarral DeBarral { get; set; }
-        public BandasVerticales BandasVerticales { get; set; }
+        public Roller? Roller { get; set; }
+        public DeBarral? DeBarral { get; set; }
+        public BandasVerticales? BandasVerticales { get; set; }
         }
 }

@@ -7,87 +7,72 @@ namespace RollingSun_API {
             Datos = _datos;
             }
 
-        private Roller ProcesarRoller(string? flag) {
+        private Roller? ProcesarRoller(string? flag) {
             Roller roller = Datos.GetRoller();
+            List<Tela> telas = Datos.GetTelas();
+            List<Color> colores = Datos.GetColores();
 
             if (flag == "all") {
                 return roller;
                 }
 
-            foreach (var name in roller.TelaNombre) {
-                Tela tela = Datos.GetTelas().Where(x => x.Nombre == name).Single();
-                if (!tela.disponible) {
-                    roller.TelaNombre.Remove(name);
+            if (flag == "comodin") {
+                return null;
                 }
-                }
-            foreach (var name in roller.ColorNombre) {
-                Color color = Datos.GetColores().Where(x => x.Nombre == name).Single();
-                if (!color.disponible) {
-                    roller.ColorNombre.Remove(name);
-                    }
-                }
+
+            roller.TelaNombre.RemoveAll(t => telas.Exists(x => x.Nombre == t && !x.disponible));
+            roller.ColorNombre.RemoveAll(c => colores.Exists(x => x.Nombre == c && !x.disponible));
 
             return roller;
             }
 
-        private DeBarral ProcesarDebarral(string? flag) {
+        private DeBarral? ProcesarDebarral(string? flag) {
             DeBarral debarral = Datos.GetDeBarral();
+            List<Tela> telas = Datos.GetTelas();
+            List<Color> colores = Datos.GetColores();
 
             if (flag == "all") {
                 return debarral;
                 }
 
-            foreach (var name in debarral.TelaNombre) {
-                Tela tela = Datos.GetTelas().Where(x => x.Nombre == name).Single();
-                if (!tela.disponible) {
-                    debarral.TelaNombre.Remove(name);
-                    }
+            if (flag == "comodin") {
+                return null;
                 }
-            foreach (var name in debarral.ColorNombre) {
-                Color color = Datos.GetColores().Where(x => x.Nombre == name).Single();
-                if (!color.disponible) {
-                    debarral.ColorNombre.Remove(name);
-                    }
-                }
+
+            debarral.TelaNombre.RemoveAll(t => telas.Exists(x => x.Nombre == t && !x.disponible));
+            debarral.ColorNombre.RemoveAll(c => colores.Exists(x => x.Nombre == c && !x.disponible));
 
             return debarral;
             }
 
-        private BandasVerticales ProcesarBandasverticales(string? flag) {
+        private BandasVerticales? ProcesarBandasverticales(string? flag) {
             BandasVerticales bandasverticales = Datos.GetBandasVerticales();
+            List<Tela> telas = Datos.GetTelas();
+            List<Color> colores = Datos.GetColores();
 
             if (flag == "all") {
                 return bandasverticales;
                 }
 
-            foreach (var name in bandasverticales.TelaNombre) {
-                Tela tela = Datos.GetTelas().Where(x => x.Nombre == name).Single();
-                if (!tela.disponible) {
-                    bandasverticales.TelaNombre.Remove(name);
-                    }
+            if (flag == "comodin") {
+                return null;
                 }
-            foreach (var name in bandasverticales.ColorNombre) {
-                Color color = Datos.GetColores().Where(x => x.Nombre == name).Single();
-                if (!color.disponible) {
-                    bandasverticales.ColorNombre.Remove(name);
-                    }
-                }
+
+            bandasverticales.TelaNombre.RemoveAll(t => telas.Exists(x => x.Nombre == t && !x.disponible));
+            bandasverticales.ColorNombre.RemoveAll(c => colores.Exists(x => x.Nombre == c && !x.disponible));
 
             return bandasverticales;
             }
 
         public CortinasDTO GetCortinas(string? cortina,string? flag) {
 
-            //Si se tiene alguna cortina, se asume que la acción solo leerá información sobre esa cortina
-            //Por lo tanto, los datos pasados por las otras cortinas no afectan a la respuesta
-            //Se elige pasar "all" como flag para las cortinas que no importan porque con ella el procesamiento es más corto porque devuelve al entrar en el if (flag == "all") {}
             switch (cortina) {
                 case "roller":
-                    return new CortinasDTO { Roller = ProcesarRoller(flag),BandasVerticales = ProcesarBandasverticales("all"),DeBarral = ProcesarDebarral("all") };
+                    return new CortinasDTO { Roller = ProcesarRoller(flag),BandasVerticales = ProcesarBandasverticales("comodin"),DeBarral = ProcesarDebarral("comodin") };
                 case "debarral":
-                    return new CortinasDTO { Roller = ProcesarRoller("all"),BandasVerticales = ProcesarBandasverticales("all"),DeBarral = ProcesarDebarral(flag) };
+                    return new CortinasDTO { Roller = ProcesarRoller("comodin"),BandasVerticales = ProcesarBandasverticales("comodin"),DeBarral = ProcesarDebarral(flag) };
                 case "bandasverticales":
-                    return new CortinasDTO { Roller = ProcesarRoller("all"),BandasVerticales = ProcesarBandasverticales(flag),DeBarral = ProcesarDebarral("all") };
+                    return new CortinasDTO { Roller = ProcesarRoller("comodin"),BandasVerticales = ProcesarBandasverticales(flag),DeBarral = ProcesarDebarral("comodin") };
                 default:
                     break;
                 }

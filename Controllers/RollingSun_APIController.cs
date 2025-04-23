@@ -13,8 +13,13 @@ namespace RollingSun_API.Controllers {
             }
 
         [Route("cortinas/{cortina?}/{flag?}")]
-        [Route("/cortinas/{flag?}")]
+        [Route("cortinas/{flag?}")]
         public ActionResult<CortinasDTO> GetCortinas(string? cortina, string? flag) {
+
+            if (flag == "roller" || flag == "bandasverticales" || flag == "debarral") {
+                return DB.GetCortinas(flag,null);
+                }
+
             return DB.GetCortinas(cortina,flag);
             }
         }
