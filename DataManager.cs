@@ -7,18 +7,22 @@ namespace RollingSun_API {
             Datos = _datos;
             }
 
-        private Roller ProcesarRoller(string? flag) {
+        private Roller? ProcesarRoller(string? flag) {
             Roller roller = Datos.GetRoller();
 
             if (flag == "all") {
                 return roller;
                 }
 
+            if (flag == "comodin") {
+                return null;
+                }
+
             foreach (var name in roller.TelaNombre) {
                 Tela tela = Datos.GetTelas().Where(x => x.Nombre == name).Single();
                 if (!tela.disponible) {
                     roller.TelaNombre.Remove(name);
-                }
+                    }
                 }
             foreach (var name in roller.ColorNombre) {
                 Color color = Datos.GetColores().Where(x => x.Nombre == name).Single();
@@ -30,11 +34,15 @@ namespace RollingSun_API {
             return roller;
             }
 
-        private DeBarral ProcesarDebarral(string? flag) {
+        private DeBarral? ProcesarDebarral(string? flag) {
             DeBarral debarral = Datos.GetDeBarral();
 
             if (flag == "all") {
                 return debarral;
+                }
+
+            if (flag == "comodin") {
+                return null;
                 }
 
             foreach (var name in debarral.TelaNombre) {
@@ -53,11 +61,15 @@ namespace RollingSun_API {
             return debarral;
             }
 
-        private BandasVerticales ProcesarBandasverticales(string? flag) {
+        private BandasVerticales? ProcesarBandasverticales(string? flag) {
             BandasVerticales bandasverticales = Datos.GetBandasVerticales();
 
             if (flag == "all") {
                 return bandasverticales;
+                }
+
+            if (flag == "comodin") {
+                return null;
                 }
 
             foreach (var name in bandasverticales.TelaNombre) {
@@ -78,16 +90,13 @@ namespace RollingSun_API {
 
         public CortinasDTO GetCortinas(string? cortina,string? flag) {
 
-            //Si se tiene alguna cortina, se asume que la acción solo leerá información sobre esa cortina
-            //Por lo tanto, los datos pasados por las otras cortinas no afectan a la respuesta
-            //Se elige pasar "all" como flag para las cortinas que no importan porque con ella el procesamiento es más corto porque devuelve al entrar en el if (flag == "all") {}
             switch (cortina) {
                 case "roller":
-                    return new CortinasDTO { Roller = ProcesarRoller(flag),BandasVerticales = ProcesarBandasverticales("all"),DeBarral = ProcesarDebarral("all") };
+                    return new CortinasDTO { Roller = ProcesarRoller(flag),BandasVerticales = ProcesarBandasverticales("comodin"),DeBarral = ProcesarDebarral("comodin") };
                 case "debarral":
-                    return new CortinasDTO { Roller = ProcesarRoller("all"),BandasVerticales = ProcesarBandasverticales("all"),DeBarral = ProcesarDebarral(flag) };
+                    return new CortinasDTO { Roller = ProcesarRoller("comodin"),BandasVerticales = ProcesarBandasverticales("comodin"),DeBarral = ProcesarDebarral(flag) };
                 case "bandasverticales":
-                    return new CortinasDTO { Roller = ProcesarRoller("all"),BandasVerticales = ProcesarBandasverticales(flag),DeBarral = ProcesarDebarral("all") };
+                    return new CortinasDTO { Roller = ProcesarRoller("comodin"),BandasVerticales = ProcesarBandasverticales(flag),DeBarral = ProcesarDebarral("comodin") };
                 default:
                     break;
                 }

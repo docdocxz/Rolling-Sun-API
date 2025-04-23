@@ -1,0 +1,26 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+
+#Colores no disponibles: Negro, Beige, Verde, Anaranjado
+@host = localhost:7252
+
+GET https://{{host}}/api/cortinas/
+
+###
+
+GET https://{{host}}/api/cortinas/all
+
+###
+
+GET https://{{host}}/api/cortinas/roller
+
+###
+
+GET https://{{host}}/api/cortinas/bandasverticales/all
+
+###
+
+GET https://{{host}}/api/cortinas/debarral/all
+
+###
+
+GET https://{{host}}/api/cortinas/debarral
