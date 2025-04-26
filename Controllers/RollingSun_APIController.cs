@@ -41,5 +41,10 @@ namespace RollingSun_API.Controllers {
         public ActionResult<List<Color>> GetColoresCortinas(string cortina,string? flag) {
             return DB.GetColor(cortina,flag);
             }
+
+        [Route("tela/{flag?}")]
+        public ActionResult<List<Tela>> GetTelas(string? flag) {
+            return DB.GetTela(flag);
+            }
         }
     }

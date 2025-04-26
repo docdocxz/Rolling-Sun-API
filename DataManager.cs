@@ -1,4 +1,5 @@
 ﻿using RollingSun_API.Models;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.WebSockets;
 
@@ -82,22 +83,46 @@ namespace RollingSun_API {
             }
         
         public List<Color> GetColor(string? param, string? flag) {
+            List<Color> colores = Datos.GetColores();
+
             List<Color> rta = param switch {
                 "roller" =>
-                    Datos.GetColores().Where(c => Datos.GetRoller().ColorNombre.Contains(c.Nombre)).ToList(),
+                    colores.Where(c => Datos.GetRoller().ColorNombre.Contains(c.Nombre)).ToList(),
                 "debarral" =>
-                    Datos.GetColores().IntersectBy(Datos.GetDeBarral().ColorNombre,c => c.Nombre).ToList(),
+                    colores.IntersectBy(Datos.GetDeBarral().ColorNombre,c => c.Nombre).ToList(),
                 "bandasverticales" =>
-                    Datos.GetColores().IntersectBy(Datos.GetBandasVerticales().ColorNombre,c => c.Nombre).ToList(),
+                    colores.IntersectBy(Datos.GetBandasVerticales().ColorNombre,c => c.Nombre).ToList(),
                 var t when Datos.GetTelas().Exists(f => f.Nombre.ToLower() == t) =>
-                    Datos.GetColores().IntersectBy(Datos.GetTelas().Find(g => g.Nombre.ToLower() == t).ColorNombre.Select(e => e.ToLower()),r => r.Nombre.ToLower()).ToList(),
+                    colores.IntersectBy(Datos.GetTelas().Find(g => g.Nombre.ToLower() == t).ColorNombre.Select(e => e.ToLower()),r => r.Nombre.ToLower()).ToList(),
                 var x when Datos.GetColores().Exists(f => f.Nombre.ToLower() == x) =>
-                    Datos.GetColores().FindAll(b => b.Nombre.ToLower() == x),  //Uso FindAll() para que devuelva una lista y sea compatible con el tipo de retorno
+                    colores.FindAll(b => b.Nombre.ToLower() == x),  //Uso FindAll() para que devuelva una lista y sea compatible con el tipo de retorno
                 null =>
-                    Datos.GetColores()
+                    Datos.GetColores(),
+                _ => throw new Exception("Color not found")
                 };
 
             rta = flag != "all" ? rta = rta.Where(p => p.disponible).ToList() : rta;
+
+            return rta;
+            }
+
+        public List<Tela> GetTela(string? flag) {
+            List<Tela> rta;
+            List<Tela> telas = Datos.GetTelas();
+
+            switch (flag) {
+                case "all":
+                    rta = telas.Where(tela => tela.disponible).ToList();
+                    break;
+                case null:
+                    rta = telas;
+                    break;
+                case var r when telas.Exists(tela => tela.Nombre.ToLower() == r):
+                    rta = telas.FindAll(tela => tela.Nombre.ToLower() == r);
+                    break;
+                default:
+                    throw new Exception("Tela not found");
+                }
 
             return rta;
             }
