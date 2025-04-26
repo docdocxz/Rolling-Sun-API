@@ -1,4 +1,6 @@
 ﻿using RollingSun_API.Models;
+using System.Diagnostics;
+using System.Net.WebSockets;
 
 namespace RollingSun_API {
     public class DataManager : IDataManager {
@@ -7,6 +9,21 @@ namespace RollingSun_API {
             Datos = _datos;
             }
 
+        public CortinasDTO GetCortinas(string? cortina,string? flag) {
+
+            switch (cortina) {
+                case "roller":
+                    return new CortinasDTO { Roller = ProcesarRoller(flag),BandasVerticales = ProcesarBandasverticales("comodin"),DeBarral = ProcesarDebarral("comodin") };
+                case "debarral":
+                    return new CortinasDTO { Roller = ProcesarRoller("comodin"),BandasVerticales = ProcesarBandasverticales("comodin"),DeBarral = ProcesarDebarral(flag) };
+                case "bandasverticales":
+                    return new CortinasDTO { Roller = ProcesarRoller("comodin"),BandasVerticales = ProcesarBandasverticales(flag),DeBarral = ProcesarDebarral("comodin") };
+                default:
+                    break;
+                }
+
+            return new CortinasDTO { Roller = ProcesarRoller(flag),BandasVerticales = ProcesarBandasverticales(flag),DeBarral = ProcesarDebarral(flag)};
+            }
         private Roller? ProcesarRoller(string? flag) {
             Roller roller = Datos.GetRoller();
             List<Tela> telas = Datos.GetTelas();
@@ -30,7 +47,7 @@ namespace RollingSun_API {
             DeBarral debarral = Datos.GetDeBarral();
             List<Tela> telas = Datos.GetTelas();
             List<Color> colores = Datos.GetColores();
-
+            
             if (flag == "all") {
                 return debarral;
                 }
@@ -63,21 +80,26 @@ namespace RollingSun_API {
 
             return bandasverticales;
             }
+        
+        public List<Color> GetColor(string? param, string? flag) {
+            List<Color> rta = param switch {
+                "roller" =>
+                    Datos.GetColores().Where(c => Datos.GetRoller().ColorNombre.Contains(c.Nombre)).ToList(),
+                "debarral" =>
+                    Datos.GetColores().IntersectBy(Datos.GetDeBarral().ColorNombre,c => c.Nombre).ToList(),
+                "bandasverticales" =>
+                    Datos.GetColores().IntersectBy(Datos.GetBandasVerticales().ColorNombre,c => c.Nombre).ToList(),
+                var t when Datos.GetTelas().Exists(f => f.Nombre.ToLower() == t) =>
+                    Datos.GetColores().IntersectBy(Datos.GetTelas().Find(g => g.Nombre.ToLower() == t).ColorNombre.Select(e => e.ToLower()),r => r.Nombre.ToLower()).ToList(),
+                var x when Datos.GetColores().Exists(f => f.Nombre.ToLower() == x) =>
+                    Datos.GetColores().FindAll(b => b.Nombre.ToLower() == x),  //Uso FindAll() para que devuelva una lista y sea compatible con el tipo de retorno
+                null =>
+                    Datos.GetColores()
+                };
 
-        public CortinasDTO GetCortinas(string? cortina,string? flag) {
+            rta = flag != "all" ? rta = rta.Where(p => p.disponible).ToList() : rta;
 
-            switch (cortina) {
-                case "roller":
-                    return new CortinasDTO { Roller = ProcesarRoller(flag),BandasVerticales = ProcesarBandasverticales("comodin"),DeBarral = ProcesarDebarral("comodin") };
-                case "debarral":
-                    return new CortinasDTO { Roller = ProcesarRoller("comodin"),BandasVerticales = ProcesarBandasverticales("comodin"),DeBarral = ProcesarDebarral(flag) };
-                case "bandasverticales":
-                    return new CortinasDTO { Roller = ProcesarRoller("comodin"),BandasVerticales = ProcesarBandasverticales(flag),DeBarral = ProcesarDebarral("comodin") };
-                default:
-                    break;
-                }
-
-            return new CortinasDTO { Roller = ProcesarRoller(flag),BandasVerticales = ProcesarBandasverticales(flag),DeBarral = ProcesarDebarral(flag)};
+            return rta;
             }
         }
     }

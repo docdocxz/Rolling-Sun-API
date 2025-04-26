@@ -24,3 +24,7 @@ GET https://{{host}}/api/cortinas/debarral/all
 ###
 
 GET https://{{host}}/api/cortinas/debarral
+
+###
+
+GET https://{{host}}/api/color/gris
