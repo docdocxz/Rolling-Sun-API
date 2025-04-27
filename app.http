@@ -27,4 +27,44 @@ GET https://{{host}}/api/cortinas/debarral
 
 ###
 
-GET https://{{host}}/api/color/gris
+GET https://{{host}}/api/color/
+
+###
+
+GET https://{{host}}/api/color/cortinas/roller/all
+
+###
+
+GET https://{{host}}/api/color/cortinas/debarral
+
+###
+
+GET https://{{host}}/api/color/telas/screen
+
+###
+
+GET https://{{host}}/api/color/telas/algodon/all
+
+###
+
+GET https://{{host}}/api/color/telas/blanco
+
+###
+
+GET https://{{host}}/api/color/telas/negro
+
+###
+
+GET https://{{host}}/api/tela/blackout
+
+###
+
+GET https://{{host}}/api/tela/blackout
+
+###
+
+GET https://{{host}}/api/tela/
+
+###
+
+GET https://{{host}}/api/tela/all

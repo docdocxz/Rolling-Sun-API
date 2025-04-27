@@ -1,0 +1,93 @@
+﻿Rolling Sun es una empresa mayorista que fabrica cortinas. Tiene una base de datos con todos los modelos de cortina que vende (que de momento no tiene proyecto propio, sino que es una carpeta con archivos JSON), una API para comunicar esos datos a los minoristas que venden sus productos y una aplicación de consola para hacer CRUD.
+
+Tipos de cortina:
+-Roller
+-Bandas verticales
+-De barral
+
+Tipos de tela:
+-Blackout
+-Screen
+-Algodón
+
+Las cortinas tienen una propiedad ColorNombre con todos los colores para esa cortina y una propiedad TelaNombre con todas las telas para esa cortina, pero hay que tener en cuenta que tanto los colores como las telas tienen una disponibilidad. La tela o el color podría no estar disponible, pero ese es un estado temporal. Si fuera permanente se eliminaría esa posibilidad de la propiedad.
+Las telas también tienen una propiedad ColorNombre para los colores que puede tener la tela.
+
+Tela:
+{
+	"Nombre": String,
+	"Gramaje": Int,
+	"IsOpaca": Bool,
+	"ColorNombre": List<String>,
+	"disponible": Bool
+}
+
+Color:
+{
+	"Nombre": String,
+	"R": Int,
+	"G": Int,
+	"B": Int,
+	"hex": String,
+	"disponible": Bool
+}
+
+Cortinas:
+{
+  "Roller": {
+    "TelaNombre": List<String>,
+    "ColorNombre": List<String>,
+    "StdAncho": Int,
+    "Precio": Decimal,
+    "Material": List<String>,
+    "Largo": List<Float>,
+    "Tensor": List<String>,
+  },
+  "DeBarral": {
+    "TelaNombre": List<String>,
+    "ColorNombre": List<String>,
+    "StdAncho": Float,
+    "Precio": Decimal,
+    "Largo": List<Float>,
+    "Material": List<String>
+  },
+  "BandasVerticales": {
+    "TelaNombre": List<String>,
+    "ColorNombre": List<String>,
+    "StdAncho": Float,
+    "Precio": Decimal,
+    "Largo": List<Float>
+  }
+}
+
+
+Endpoints:
+/api
+├	/cortinas: Devuelve una lista de los tipos de cortinas que vendemos con sus tipos de tela y una lista de las telas disponibles.
+│	├	/all: Devuelve todos los tipos de cortinas indicando cuáles no están disponibles
+│	├	/roller: Devuelve una lista con las cortinas roller disponibles y una lista de sus telas.
+│	│	└	/all: Devuelve una lista con todas las cortinas roller indicando cuáles no están disponibles.
+│	├	/debarral: Devuelve una lista con las cortinas de barral disponibles y una lista de sus telas.
+│	│	└	/all: Devuelve una lista con todas las cortinas de barral indicando cuáles no están disponibles.
+│	└	/bandasverticales: Devuelve una lista con las bandas verticales disponibles y una lista de sus telas.
+│		└	/all: Devuelve una lista con todas las bandas verticales indicando cuáles no están disponibles.
+├	/color: Devuelve la lista de colores disponibles.
+│	├	/all: Devuelve la lista de colores completa.
+│	├	/cortinas
+│	│	├	/roller: Devuelve la lista de colores que están disponibles para las roller
+│	│	│	└	/all: Devuelve la lista de colores para roller completa
+│	│	├	/debarral: Devuelve la lista de colores que están disponibles para las cortinas de barral
+│	│	│	└	/all: Devuelve la lista de colores para cortinas de barral completa
+│	│	└	/bandasverticales: Devuelve la lista de colores que están disponibles para las bandas verticales
+│	│		└	/all: Devuelve la lista de colores para bandas verticales completa
+│	├	/telas
+│	│	├	/screen: Devuelve la lista de colores que están disponibles para tela screen
+│	│	│	└	/all: Devuelve la lista de colores para tela screen completa
+│	│	├	/blackout: Devuelve la lista de colores que están disponibles para tela blackout
+│	│	│	└	/all: Devuelve la lista de colores para tela blackout completa
+│	│	└	/algodon: Devuelve la lista de colores que están disponibles para tela de algodón
+│	│		└	/all: Devuelve la lista de colores para tela de algodón completa
+│	└	/[NAME]: Devuelve información sobre el color con el nombre NAME.
+└	/tela/: Devuelve una lista de las telas disponibles
+	├	/all: Devuelve la lista de telas
+	└	/[NAME]: Devuelve información sobre la tela con el nombre NAME
